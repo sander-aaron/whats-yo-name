@@ -1,0 +1,48 @@
+repo: 'whats-yo-name'
+
+naming: true
+restrictFileTypes: true
+liveWebsite: true
+
+git:
+  numCommits: 1
+  allCommitted: true
+  allSynced: true
+
+html:
+  - path: 'index.html'
+    valid: true
+    bestPractices: true
+    has:
+      - 'script[src="js/main.js"]'
+    hasNot:
+      - ['link', 'CSS isn’t necessary to complete this assignment']
+      - ['body :not(script)', 'The `<script>` tag should be the only tag inside `<body>` — no other HTML is needed']
+
+js:
+  - path: 'js/main.js'
+    valid: true
+    bestPractices: true
+    search:
+      - 'prompt\('
+      - 'alert\('
+      - 'if \('
+      - '\} else \{'
+      - '=='
+
+functionality:
+  - path: 'index.html'
+    setup: |
+      window.alert = function (str) {
+        window.alertText = str;
+      };
+
+      window.prompt = function () {
+        return 'Thomas';
+      };
+    tests:
+      - |
+        if (/names.+same/i.test(window.alertText.trim())) pass();
+        if (/names.+different/i.test(window.alertText.trim())) pass();
+
+        fail('The message output in the `alert()` doesn’t match the expected result');
